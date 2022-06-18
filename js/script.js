@@ -11,3 +11,163 @@
 // BONUS:
 // 1- quando si clicca su una bomba e finisce la partita, evitare che si possa cliccare su altre celle
 // 2- quando si clicca su una bomba e finisce la partita, il software scopre tutte le bombe nascoste
+
+
+// Inserisco il button che farà partire il gioco in una variabile
+let gameStartBtn = document.getElementById('play_btn')
+
+// Parte il gioco
+gameStartBtn.addEventListener('click', startGame)
+function startGame() {
+    // Seleziono la griglia
+    const grid = document.querySelector('.grid')
+
+    // Resetto la griglia all'inizio della partita
+    grid.innerHTML = ''
+
+    // Definisco in numberOfBombs il numero di bombe presenti nel campo minato
+    const numberOfBombs = 16;
+
+    // Inserisco il valore del selettore della difficoltà in una variabile
+    let gameLevel = document.getElementById('difficulty').value
+    
+    // Definisco maxRange e gridClass
+    let maxRange
+    let gridClass
+    let minRange = 1
+
+    if (gameLevel === 'easy') {
+        maxRange = 100
+        gridClass = 'easy'
+    } else if (gameLevel === 'hard') {
+        maxRange = 81
+        gridClass = 'hard'
+    } else if (gameLevel === 'crazy') {
+        maxRange = 49
+        gridClass = 'crazy'
+    }
+    
+    // Creo le bombe
+    // Funzione che popola l'array di bombe
+    function bombsGenerator(bombsNumber, min, max) {
+        // Creo un array contenente le bombe
+        let bombsArray = []
+        while(bombsArray.length < 16) {
+            const randomNumber = getRndInteger(minRange, maxRange);
+            // Pusho il numero creato in bombsArray solo se non è già presente
+            if(!bombsArray.includes(randomNumber)) {
+                bombsArray.push(randomNumber);
+            }
+                
+            }
+
+            return bombsArray;
+        }
+    let bombs = bombsGenerator(numberOfBombs, 1, maxRange)
+
+    // Definisco il numero massimo di tentativi possibili e lo salvo in una variabile
+    let maxAttempts = maxRange - numberOfBombs
+    
+    // Creo una variabile per salvare i numeri dati dall'utente
+    let userNumber
+    // Creo un array contenente le bombe
+    let bombsArray = []
+    
+    // Creo un array vuoto che conterrà i numeri che non sono bombe per tener traccia del numero di tentativi fatti dall'utente
+    let correctNumbers = []
+
+    // Creo una variabile booleana 'defeat' impostata su false che servirà a stoppare il ciclo
+    let defeat = false
+
+    // Genero la griglia
+    // Funzione che popola la griglia
+    function gridGenerator() {
+        grid.classList.add(gridClass)
+
+        // Creo i numeri da 1 a maxRange
+        for(let i = 1; i <= maxRange; i++) {
+            // Creo i singoli quadrati
+            const newSquare = document.createElement('div');
+            newSquare.innerHTML = `<span>${i}</span>`;
+            newSquare.classList.add('square');
+            newSquare.addEventListener('click', manageSquareClick);
+
+            // Appendo gli squares appena creati a grid
+            grid.append(newSquare);
+        }
+            
+    }
+    gridGenerator()
+
+    // Funzione che gestisce il click sugli squares
+    function manageSquareClick() {
+        
+    }
+}
+
+
+// // Se l'utente da il numero di una bomba, ha perso
+// //     Altrimenti il gioco continua, chiedo un altro numero
+// gameStartBtn.addEventListener('click', 
+//     function() {
+//         bombsGenerator();
+//         if (gameLevel === 'easy') {
+//             maxRange = 100
+//         } else if (gameLevel === 'hard') {
+//             maxRange = 81
+//         } else if (gameLevel === 'crazy') {
+//             maxRange = 49
+//         }
+//             console.log(gameLevel)
+//             console.log(maxRange)
+//         }
+//     )
+
+
+// ----------
+// FUNCTIONS
+// ----------
+
+// Funzione che genera numeri random da minRange a maxRange
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) ) + min;
+}
+
+// Funzione che popola l'array di bombe
+function bombsGenerator(bombsNumber, min, max) {
+    // Creo un array contenente le bombe
+    let bombsArray = []
+   while(bombsArray.length < 16) {
+    const randomNumber = getRndInteger(minRange, maxRange);
+    // Pusho il numero creato in bombsArray solo se non è già presente
+    if(!bombsArray.includes(randomNumber)) {
+        bombsArray.push(randomNumber);
+    }
+        
+    }
+
+    return bombsArray;
+}
+
+
+
+// while(defeat == false) {
+//     if (correctNumbers.length === maxAttempts) {
+//         defeat = true
+//         alert('Complimenti, hai vinto!')
+//     } else {
+//         userNumber = parseInt(prompt('Dimmi un numero'))
+//         if (bombsArray.includes(userNumber)) {
+//             defeat = true
+//             alert('Hai perso') 
+//             alert('il tuo punteggio è: ' + correctNumbers.length)   
+//         } else {
+//             if (correctNumbers.length < maxAttempts && !correctNumbers.includes(userNumber)) {
+//                 correctNumbers.push(userNumber)
+//             }
+//                 else {
+//                     defeat = true
+//                 }
+            
+//         }
+// }   }
