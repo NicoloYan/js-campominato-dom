@@ -24,7 +24,6 @@ function startGame() {
 
     // Resetto la griglia all'inizio della partita
     grid.innerHTML = ''
-
     // Definisco in numberOfBombs il numero di bombe presenti nel campo minato
     const numberOfBombs = 16;
 
@@ -64,20 +63,17 @@ function startGame() {
             return bombsArray;
         }
     let bombs = bombsGenerator(numberOfBombs, 1, maxRange)
-
+    console.log(bombs)
     // Definisco il numero massimo di tentativi possibili e lo salvo in una variabile
     let maxAttempts = maxRange - numberOfBombs
     
     // Creo una variabile per salvare i numeri dati dall'utente
-    let userNumber
+    // let userNumber
     // Creo un array contenente le bombe
     let bombsArray = []
-    
+    console.log(bombsArray)
     // Creo un array vuoto che conterrà i numeri che non sono bombe per tener traccia del numero di tentativi fatti dall'utente
     let correctNumbers = []
-
-    // Creo una variabile booleana 'defeat' impostata su false che servirà a stoppare il ciclo
-    let defeat = false
 
     // Genero la griglia
     // Funzione che popola la griglia
@@ -101,73 +97,30 @@ function startGame() {
 
     // Funzione che gestisce il click sugli squares
     function manageSquareClick() {
-        
+        // Seleziono il singolo numero all'interno dello square cliccato
+        let squareNumber = parseInt(this.querySelector('span').innerHTML);
+
+        if (bombs.includes(squareNumber)) {
+            this.classList.add('bomb')
+            alert('Hai perso') 
+            alert('il tuo punteggio è: ' + correctNumbers.length)
+        } else {
+            this.classList.add('not_a_bomb')
+            if (!correctNumbers.includes(squareNumber)) {
+                correctNumbers.push(squareNumber)
+            }
+
+            if (correctNumbers.length === maxAttempts) {
+                alert('Complimenti, hai vinto!')
+            }
+            
+        }
     }
+
 }
-
-
-// // Se l'utente da il numero di una bomba, ha perso
-// //     Altrimenti il gioco continua, chiedo un altro numero
-// gameStartBtn.addEventListener('click', 
-//     function() {
-//         bombsGenerator();
-//         if (gameLevel === 'easy') {
-//             maxRange = 100
-//         } else if (gameLevel === 'hard') {
-//             maxRange = 81
-//         } else if (gameLevel === 'crazy') {
-//             maxRange = 49
-//         }
-//             console.log(gameLevel)
-//             console.log(maxRange)
-//         }
-//     )
-
-
-// ----------
-// FUNCTIONS
-// ----------
 
 // Funzione che genera numeri random da minRange a maxRange
 function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
 
-// Funzione che popola l'array di bombe
-function bombsGenerator(bombsNumber, min, max) {
-    // Creo un array contenente le bombe
-    let bombsArray = []
-   while(bombsArray.length < 16) {
-    const randomNumber = getRndInteger(minRange, maxRange);
-    // Pusho il numero creato in bombsArray solo se non è già presente
-    if(!bombsArray.includes(randomNumber)) {
-        bombsArray.push(randomNumber);
-    }
-        
-    }
-
-    return bombsArray;
-}
-
-
-
-// while(defeat == false) {
-//     if (correctNumbers.length === maxAttempts) {
-//         defeat = true
-//         alert('Complimenti, hai vinto!')
-//     } else {
-//         userNumber = parseInt(prompt('Dimmi un numero'))
-//         if (bombsArray.includes(userNumber)) {
-//             defeat = true
-//             alert('Hai perso') 
-//             alert('il tuo punteggio è: ' + correctNumbers.length)   
-//         } else {
-//             if (correctNumbers.length < maxAttempts && !correctNumbers.includes(userNumber)) {
-//                 correctNumbers.push(userNumber)
-//             }
-//                 else {
-//                     defeat = true
-//                 }
-            
-//         }
-// }   }

@@ -83,3 +83,9 @@ main {
 .square {
     border: 1px solid black;
 }
+.square.bomb {
+    background-color: red;
+}
+.square.not_a_bomb {
+    background-color: lightblue;
+}
